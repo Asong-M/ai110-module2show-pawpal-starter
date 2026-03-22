@@ -2,70 +2,76 @@
 
 ## 1. System Design
 
-**a. Initial design**
+### a. Initial design
+My initial UML design included four main classes: Owner, Pet, Task, and Scheduler. The Owner class is responsible for managing pets. Each Pet stores its own tasks. The Task class represents individual pet care activities such as feeding and walking. The Scheduler class is responsible for sorting tasks and generating a daily care plan.
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
-
-**b. Design changes**
-
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
-
----
+### b. Design changes
+During implementation, I kept the overall class structure the same, but I simplified the design to focus on the core scheduling logic. Instead of adding too many attributes at the beginning, I used only the fields needed for task scheduling, such as title, duration, and priority.
 
 ## 2. Scheduling Logic and Tradeoffs
 
-**a. Constraints and priorities**
+### a. Constraints and priorities
+My scheduler considers two main constraints: task priority and available time. Higher-priority tasks are scheduled first. A task is only added to the daily plan if it fits within the owner's available hours.
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
-
-**b. Tradeoffs**
-
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
-
----
+### b. Tradeoffs
+One tradeoff in my scheduler is that it uses a simple priority-based strategy instead of a more advanced optimization algorithm. This means the solution is easy to understand and implement, but it may not always produce the absolute best schedule in more complex scenarios. For this project, I think that tradeoff is reasonable because the goal is to demonstrate clear object-oriented design and core scheduling logic.
 
 ## 3. AI Collaboration
 
-**a. How you used AI**
+### a. How you used AI
+I used AI to help brainstorm the system design, identify the main classes, and draft the initial scheduling logic. AI was also helpful for generating example UML structure and clarifying how the classes should relate to one another.
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
-
-**b. Judgment and verification**
-
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
-
----
+### b. Judgment and verification
+I reviewed the AI-generated suggestions and simplified them to match the project requirements. I verified the result by running the demo script and checking that tasks were sorted correctly and that the daily plan respected the available time constraint.
 
 ## 4. Testing and Verification
 
-**a. What you tested**
+### a. What you tested
+I tested the creation of tasks, the ability to add tasks to pets, and the scheduler’s ability to sort tasks by priority and generate a daily plan.
 
-- What behaviors did you test?
-- Why were these tests important?
-
-**b. Confidence**
-
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
-
----
+### b. Confidence
+I am confident that the current version works correctly for the core use case. There is still room to improve the scheduler with more advanced logic in the future.
 
 ## 5. Reflection
 
-**a. What went well**
+### a. What went well
+The object-oriented structure worked well and made the system easy to organize. The class relationships were simple and matched the real-world problem clearly.
 
-- What part of this project are you most satisfied with?
+### b. What you would improve
+If I continued this project, I would add more detailed time handling, conflict detection, recurring task support, and a stronger user interface.
 
-**b. What you would improve**
+### c. Key takeaway
+This project helped me practice turning a real-world scenario into classes, methods, and scheduling logic. I also learned how AI can help with brainstorming and implementation while still requiring human review and refinement.
+## UML Diagram
 
-- If you had another iteration, what would you improve or redesign?
+```mermaid
+classDiagram
+    class Owner {
+        +name
+        +available_hours
+        +pets
+        +add_pet()
+        +get_all_tasks()
+    }
 
-**c. Key takeaway**
+    class Pet {
+        +name
+        +species
+        +tasks
+        +add_task()
+    }
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+    class Task {
+        +title
+        +duration
+        +priority
+    }
+
+    class Scheduler {
+        +sort_tasks()
+        +generate_daily_plan()
+    }
+
+    Owner --> Pet
+    Pet --> Task
+    Scheduler --> Task
