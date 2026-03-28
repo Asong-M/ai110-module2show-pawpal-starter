@@ -1,11 +1,13 @@
 class Task:
-    def __init__(self, title, duration, priority):
+    def __init__(self, title, duration, priority, time="09:00", frequency="once"):
         self.title = title
         self.duration = duration
         self.priority = priority
+        self.time = time
+        self.frequency = frequency
 
     def __repr__(self):
-        return f"{self.title} (Priority: {self.priority}, Duration: {self.duration})"
+        return f"{self.title} (Time: {self.time}, Priority: {self.priority}, Duration: {self.duration})"
 
 
 class Pet:
@@ -36,10 +38,10 @@ class Owner:
 
 class Scheduler:
     def sort_tasks(self, tasks):
-        return sorted(tasks, key=lambda x: x.priority, reverse=True)
+        return sorted(tasks, key=lambda x: (-x.priority, x.time))
 
     def generate_daily_plan(self, tasks, available_hours):
-        sorted_tasks = self.sort_tasks(tasks)
+        sorted_tasks = self.sort_tasks(tasks)   
         plan = []
         time_used = 0
 
@@ -50,32 +52,18 @@ class Scheduler:
 
         return plan
 
+    def sort_by_time(self, tasks):
+        return sorted(tasks, key=lambda task: task.time)
 
-def demo():
-    owner = Owner("Alice", 5)
+    def detect_conflicts(self, tasks):
+        conflicts = []
+        seen_times = {}
 
-    dog = Pet("Buddy", "Dog")
-    cat = Pet("Milo", "Cat")
+        for task in tasks:
+            if task.time in seen_times:
+                conflicts.append((seen_times[task.time], task))
+            else:
+                seen_times[task.time] = task
 
-    dog.add_task(Task("Walk", 2, 5))
-    dog.add_task(Task("Feed", 1, 4))
-    cat.add_task(Task("Feed Cat", 1, 3))
+        return conflicts
 
-    owner.add_pet(dog)
-    owner.add_pet(cat)
-
-    scheduler = Scheduler()
-
-    tasks = owner.get_all_tasks()
-
-    print("All Tasks:")
-    print(tasks)
-
-    print("\nDaily Plan:")
-    plan = scheduler.generate_daily_plan(tasks, owner.available_hours)
-    for task in plan:
-        print(task)
-
-
-if __name__ == "__main__":
-    demo()
